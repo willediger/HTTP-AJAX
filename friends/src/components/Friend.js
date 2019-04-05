@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import styled from 'styled-components'
+import styled from "styled-components";
 
 const FriendDiv = styled.div`
   border: 1px solid black;
@@ -13,25 +13,39 @@ const FriendDiv = styled.div`
   padding: 8px;
   padding-bottom: 5px;
   padding-top: 7px;
-`
+`;
 
 const P = styled.p`
   margin: 0;
   padding: 0;
   padding-bottom: 3px;
-`
+`;
 
 const Friend = props => {
+  let friend = null;
+  if (props.friends) {
+    friend = props.friends.find(
+      friend => `${friend.id}` === props.match.params.id
+    );
+  } else {
+    friend = props.friend;
+  }
+
+  if (!friend) {
+    return <h2>Loading friend data...</h2>;
+  }
   return (
     <FriendDiv>
-      <P class="name">Name: {props.friend.name}</P>
-      <P class="age">Age: {props.friend.age}</P>
-      <P class="email">Email: <a href={props.friend.email}>{props.friend.email}</a></P>
+      <P>Name: {friend.name}</P>
+      <P>Age: {friend.age}</P>
+      <P>
+        Email: <a href={friend.email}>{friend.email}</a>
+      </P>
     </FriendDiv>
-  )
-}
+  );
+};
 
-export default Friend
+export default Friend;
 
 // example friend
 // {
