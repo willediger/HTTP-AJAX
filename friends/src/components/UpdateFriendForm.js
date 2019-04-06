@@ -29,18 +29,6 @@ export default class UpdateFriendForm extends React.Component {
 
   componentDidMount = () => {
     this.setFriend();
-    // this.resetState();
-  };
-
-  componentDidUpdate = () => {
-    this.setFriend();
-  };
-
-  resetState = () => {
-    // assigns friend to emptyFriend, but subsequent changes to this.state.friend will not affect emptyFriend
-    // see https://stackoverflow.com/questions/7574054/javascript-how-to-pass-object-by-value/35760654#35760654
-    // or https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
-    this.setState({ friend: Object.assign({}, emptyFriend) });
   };
 
   changeHandler = ev => {
