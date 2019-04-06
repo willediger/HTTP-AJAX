@@ -7,19 +7,33 @@ const emptyFriend = {
   email: ""
 };
 
-export default class FriendForm extends React.Component {
+export default class UpdateFriendForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       // assigns friend to emptyFriend, but subsequent changes to this.state.friend will not affect emptyFriend
       // see https://stackoverflow.com/questions/7574054/javascript-how-to-pass-object-by-value/35760654#35760654
       // or https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
-      friend: {}
     };
   }
 
+  setFriend = () => {
+    let currentFriend = null;
+    if (this.props.friends && !this.state.friend) {
+      currentFriend = this.props.friends.find(
+        friend => `${friend.id}` === this.props.match.params.id
+      );
+      this.setState({ friend: currentFriend });
+    }
+  };
+
   componentDidMount = () => {
-    this.resetState();
+    this.setFriend();
+    // this.resetState();
+  };
+
+  componentDidUpdate = () => {
+    this.setFriend();
   };
 
   resetState = () => {
@@ -40,19 +54,21 @@ export default class FriendForm extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     axios
-      .post("http://localhost:5000/friends", this.state.friend)
+      .put(
+        `http://localhost:5000/friends/${this.props.match.params.id}`,
+        this.state.friend
+      )
       .then(response => {
         this.props.updateFriends(response.data);
-        this.props.history.push("/friend-list");
-        this.resetState();
+        this.props.history.push(`/friend-list/${this.props.match.params.id}/`);
       })
       .catch(err => console.log(err));
   };
 
   render() {
-    return (
+    let rendered = this.state.friend ? (
       <div>
-        <h2>Add New Friend</h2>
+        <h2>Update Friend</h2>
         <form onSubmit={this.handleSubmit}>
           <input
             type="text"
@@ -80,9 +96,12 @@ export default class FriendForm extends React.Component {
             value={this.state.friend.email}
           />
           <div className="baseline" />
-          <button type="submit">Add New Friend</button>
+          <button type="submit">Update Friend</button>
         </form>
       </div>
+    ) : (
+      "Loading Friends"
     );
+    return <div>{rendered}</div>;
   }
 }

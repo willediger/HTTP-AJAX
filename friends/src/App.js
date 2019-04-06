@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import FriendList from "./components/FriendList";
 import Friend from "./components/Friend";
 import FriendForm from "./components/FriendForm";
+import UpdateFriendForm from "./components/UpdateFriendForm";
 import Nav from "./components/Nav";
 import Home from "./components/Home";
 import { Route } from "react-router-dom";
@@ -52,6 +53,7 @@ class App extends Component {
             )}
           />
           <Route
+            exact
             path="/friend-list/:id"
             render={props => (
               <FriendDiv>
@@ -67,6 +69,17 @@ class App extends Component {
             path="/friend-form"
             render={props => (
               <FriendForm {...props} updateFriends={this.updateFriends} />
+            )}
+          />
+
+          <Route
+            path="/friend-list/:id/update"
+            render={props => (
+              <UpdateFriendForm
+                {...props}
+                updateFriends={this.updateFriends}
+                friends={this.state.friends}
+              />
             )}
           />
         </Main>

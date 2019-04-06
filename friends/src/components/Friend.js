@@ -3,6 +3,8 @@ import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 
+import pencil from "./pencil.png";
+
 const FriendContainerDiv = styled.div`
   display: flex;
   flex-direction: row;
@@ -28,9 +30,27 @@ const P = styled.p`
   padding-bottom: 3px;
 `;
 
-const CloseSpan = styled.span`
+const DeleteSpan = styled.span`
+  cursor: pointer;
+  border: 1px solid black;
+  padding: 5px 10px;
+`;
+
+const FriendButtons = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   margin-top: 20px;
   margin-right: 20px;
+`;
+
+const EditButton = styled.img`
+  width: 20px;
+  margin-top: 20px;
+  cursor: pointer;
+  border: 1px solid black;
+  padding: 5px 10px;
 `;
 
 const Friend = props => {
@@ -43,6 +63,11 @@ const Friend = props => {
         props.history.push("/friend-list");
       })
       .catch(err => console.log(err));
+  };
+
+  const updateFriend = event => {
+    console.log("Friend is being deleted");
+    props.history.push(`/friend-list/${friend.id}/update`);
   };
 
   let friend = null;
@@ -59,7 +84,11 @@ const Friend = props => {
   }
   return (
     <FriendContainerDiv>
-      <span onClick={deleteFriend}>x</span>
+      <FriendButtons>
+        <DeleteSpan onClick={deleteFriend}>X</DeleteSpan>
+        <EditButton onClick={updateFriend} src={pencil} alt="edit" />
+      </FriendButtons>
+
       <FriendDiv>
         <P>Name: {friend.name}</P>
         <P>Age: {friend.age}</P>
